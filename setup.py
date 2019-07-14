@@ -2,4 +2,4 @@
 
 from skbuild import setup
 
-setup(name="skbuild-example")
+setup(name="skbuild-example", packages=["hello"])
