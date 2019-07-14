@@ -1,12 +1,18 @@
-# Copied from scikit-build document
-# https://scikit-build.readthedocs.io/en/latest/usage.html
-
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.5.0)
 
 project(hello)
 
 find_package(PythonExtensions REQUIRED)
 
-add_library(_hello MODULE skhello/_hello.cxx)
-python_extension_module(_hello)
-install(TARGETS _hello LIBRARY DESTINATION hello)
+add_subdirectory(hello)
+
+file(WRITE "${CMAKE_BINARY_DIR}/helloModule.py" "# helloModule.py")
+install(FILES "${CMAKE_BINARY_DIR}/helloModule.py" DESTINATION ".")
+
+#
+# This code is here *ONLY* to test that the different signatures of
+# "check_dynamic_lookup" functions are not causing errors.
+#
+include(targetLinkLibrariesWithDynamicLookup)
+check_dynamic_lookup("MODULE" "SHARED" "HELLO_HAS_DYNAMIC_LOOKUP")
+check_dynamic_lookup("HELLO_HAS_DYNAMIC_LOOKUP")
